@@ -1,0 +1,57 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=8445c9c64f39b52aa4f6b7ea5c961d5e"></script>
+</head>
+
+<body>
+
+<button onclick="MyPos()">현재 나의 위치</button>
+<div id="result"></div>
+<div id="map" style="width:500px;height:500px;"></div>
+
+<script>
+var map;
+
+// 기본 지도
+window.onload = function() {
+    var container = document.getElementById("map");
+    var options = {
+        center: new kakao.maps.LatLng(37.5665, 126.9780),
+        level: 3
+    };
+    map = new kakao.maps.Map(container, options);
+};
+
+function MyPos() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(CurPosition, ErrorCallback);
+    }
+}
+
+function CurPosition(position) {
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+
+    document.getElementById("result").innerHTML =
+        "위도: " + lat + " / 경도: " + lng;
+
+    var latlng = new kakao.maps.LatLng(lat, lng);
+
+    map.setCenter(latlng);
+
+    var marker = new kakao.maps.Marker({
+        position: latlng
+    });
+
+    marker.setMap(map);
+}
+
+function ErrorCallback(error) {
+    document.getElementById("result").innerHTML = "위치 가져오기 실패";
+}
+</script>
+
+</body>
+</html>
